@@ -32,57 +32,75 @@ const Register = () => {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-slate-50 px-4">
-      <div className="w-full max-w-sm rounded-xl border border-slate-200 bg-white p-8 shadow-sm">
-        <h1 className="text-xl font-semibold text-slate-800">Đăng ký tài khoản</h1>
-        <p className="mt-1 text-sm text-slate-400">Bắt đầu quản lý tài liệu của bạn</p>
+    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-slate-50 px-4">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -left-24 -top-24 h-72 w-72 rounded-full bg-indigo-200/50 blur-3xl"
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -bottom-24 -right-24 h-72 w-72 rounded-full bg-purple-200/50 blur-3xl"
+      />
 
-        <form onSubmit={handleSubmit} className="mt-6 space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-slate-600">Họ và tên</label>
-            <input
-              type="text"
-              required
-              value={fullName}
-              onChange={(e) => setFullName(e.target.value)}
-              className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none"
-            />
+      <div className="relative w-full max-w-sm">
+        <div className="mb-6 text-center">
+          <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-linear-to-br from-indigo-500 to-purple-600 text-2xl shadow-lg shadow-indigo-500/25">
+            📁
           </div>
-          <div>
-            <label className="block text-sm font-medium text-slate-600">Email</label>
-            <input
-              type="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-slate-600">Mật khẩu</label>
-            <input
-              type="password"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none"
-            />
-          </div>
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900">Tạo tài khoản</h1>
+          <p className="mt-1 text-sm text-slate-500">Bắt đầu quản lý tài liệu của bạn</p>
+        </div>
 
-          {error && <p className="text-sm text-red-500">{error}</p>}
+        <div className="card p-8">
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label className="field-label">Họ và tên</label>
+              <input
+                type="text"
+                required
+                autoFocus
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                className="input"
+                placeholder="Nguyễn Văn A"
+              />
+            </div>
+            <div>
+              <label className="field-label">Email</label>
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="input"
+                placeholder="ban@vidu.com"
+              />
+            </div>
+            <div>
+              <label className="field-label">Mật khẩu</label>
+              <input
+                type="password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="input"
+                placeholder="Tối thiểu 6 ký tự"
+              />
+            </div>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full rounded-md bg-indigo-600 py-2 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
-          >
-            {loading ? 'Đang đăng ký...' : 'Đăng ký'}
-          </button>
-        </form>
+            {error && (
+              <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">{error}</p>
+            )}
 
-        <p className="mt-4 text-center text-sm text-slate-500">
+            <button type="submit" disabled={loading} className="btn-primary w-full">
+              {loading ? 'Đang đăng ký...' : 'Đăng ký'}
+            </button>
+          </form>
+        </div>
+
+        <p className="mt-5 text-center text-sm text-slate-500">
           Đã có tài khoản?{' '}
-          <Link to="/login" className="font-medium text-indigo-600 hover:underline">
+          <Link to="/login" className="font-semibold text-indigo-600 hover:text-indigo-700">
             Đăng nhập
           </Link>
         </p>

@@ -54,31 +54,37 @@ const QuotaBar = ({ usedPercent }) => (
   </div>
 );
 
+const StatCard = ({ icon, label, children }) => (
+  <div className="card p-5">
+    <div className="flex items-center gap-2 text-xs text-slate-400">
+      <span>{icon}</span>
+      <span>{label}</span>
+    </div>
+    <div className="mt-2">{children}</div>
+  </div>
+);
+
 const StatsBar = ({ stats, cloudUsage }) => {
   const cloudStorage = cloudUsage?.storage;
   const cloudCredits = cloudUsage?.credits;
 
   return (
     <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-      <div className="rounded-lg border border-slate-200 bg-white p-4">
-        <p className="text-xs text-slate-400">Tổng số người dùng</p>
-        <p className="mt-1 text-2xl font-semibold text-slate-800">{stats?.totalUsers ?? '-'}</p>
-      </div>
-      <div className="rounded-lg border border-slate-200 bg-white p-4">
-        <p className="text-xs text-slate-400">Tổng số tài liệu</p>
-        <p className="mt-1 text-2xl font-semibold text-slate-800">{stats?.totalDocuments ?? '-'}</p>
-      </div>
-      <div className="rounded-lg border border-slate-200 bg-white p-4">
-        <p className="text-xs text-slate-400">Dung lượng tài liệu (DB)</p>
-        <p className="mt-1 text-2xl font-semibold text-slate-800">
+      <StatCard icon="👤" label="Tổng số người dùng">
+        <p className="text-2xl font-bold text-slate-900">{stats?.totalUsers ?? '-'}</p>
+      </StatCard>
+      <StatCard icon="📄" label="Tổng số tài liệu">
+        <p className="text-2xl font-bold text-slate-900">{stats?.totalDocuments ?? '-'}</p>
+      </StatCard>
+      <StatCard icon="💾" label="Dung lượng tài liệu (DB)">
+        <p className="text-2xl font-bold text-slate-900">
           {stats ? formatBytes(stats.totalStorageBytes) : '-'}
         </p>
-      </div>
-      <div className="rounded-lg border border-slate-200 bg-white p-4">
-        <p className="text-xs text-slate-400">Hạn mức Cloudinary</p>
+      </StatCard>
+      <StatCard icon="☁️" label="Hạn mức Cloudinary">
         {cloudStorage && cloudStorage.limitBytes > 0 ? (
           <>
-            <p className="mt-1 text-lg font-semibold text-slate-800">
+            <p className="text-lg font-bold text-slate-900">
               {formatBytes(cloudStorage.usedBytes)}{' '}
               <span className="text-sm font-normal text-slate-400">
                 / {formatBytes(cloudStorage.limitBytes)}
@@ -87,22 +93,22 @@ const StatsBar = ({ stats, cloudUsage }) => {
             <QuotaBar usedPercent={cloudStorage.usedPercent} />
           </>
         ) : cloudStorage ? (
-          <p className="mt-1 text-lg font-semibold text-slate-800">
+          <p className="text-lg font-bold text-slate-900">
             {formatBytes(cloudStorage.usedBytes)}{' '}
-            <span className="text-sm font-normal text-slate-400">đã dùng (gói không giới hạn dung lượng)</span>
+            <span className="text-sm font-normal text-slate-400">đã dùng (không giới hạn)</span>
           </p>
         ) : cloudCredits ? (
           <>
-            <p className="mt-1 text-lg font-semibold text-slate-800">
+            <p className="text-lg font-bold text-slate-900">
               {cloudCredits.used.toFixed(2)}{' '}
               <span className="text-sm font-normal text-slate-400">/ {cloudCredits.limit} credits</span>
             </p>
             <QuotaBar usedPercent={cloudCredits.usedPercent} />
           </>
         ) : (
-          <p className="mt-1 text-sm text-slate-400">Không có dữ liệu</p>
+          <p className="text-sm text-slate-400">Không có dữ liệu</p>
         )}
-      </div>
+      </StatCard>
     </div>
   );
 };
@@ -170,19 +176,19 @@ const UsersTab = () => {
     <div>
       <input
         type="text"
-        placeholder="Tìm theo tên hoặc email..."
+        placeholder="🔍 Tìm theo tên hoặc email..."
         value={search}
         onChange={(e) => setSearch(e.target.value)}
-        className="mb-4 w-full max-w-sm rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none"
+        className="input mb-4 max-w-sm"
       />
 
       {actionError && (
-        <p className="mb-4 rounded-md bg-red-50 px-3 py-2 text-sm text-red-600">{actionError}</p>
+        <p className="mb-4 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">{actionError}</p>
       )}
 
-      <div className="overflow-x-auto rounded-lg border border-slate-200 bg-white">
-        <table className="min-w-full divide-y divide-slate-200 text-sm">
-          <thead className="bg-slate-50 text-left text-xs font-medium uppercase text-slate-500">
+      <div className="card overflow-x-auto">
+        <table className="min-w-full divide-y divide-slate-100 text-sm">
+          <thead className="bg-slate-50/80 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
             <tr>
               <th className="px-4 py-3">Họ tên</th>
               <th className="px-4 py-3">Email</th>
@@ -207,15 +213,11 @@ const UsersTab = () => {
               </tr>
             ) : (
               users.map((u) => (
-                <tr key={u.id}>
+                <tr key={u.id} className="transition-colors hover:bg-slate-50/60">
                   <td className="px-4 py-3 font-medium text-slate-700">{u.fullName}</td>
                   <td className="px-4 py-3 text-slate-500">{u.email}</td>
                   <td className="px-4 py-3">
-                    <span
-                      className={`rounded-full px-2 py-0.5 text-xs font-medium ${
-                        u.isLocked ? 'bg-red-50 text-red-600' : 'bg-green-50 text-green-600'
-                      }`}
-                    >
+                    <span className={u.isLocked ? 'badge-red' : 'badge-green'}>
                       {u.isLocked ? 'Đã khóa' : 'Hoạt động'}
                     </span>
                   </td>
@@ -228,24 +230,17 @@ const UsersTab = () => {
                   </td>
                   <td className="px-4 py-3 text-slate-500">{formatDate(u.createdAt)}</td>
                   <td className="px-4 py-3 text-right">
-                    <button
-                      onClick={() => setUserToQuota(u)}
-                      className="mr-2 rounded-md border border-slate-200 px-2.5 py-1 text-xs font-medium text-slate-600 hover:bg-slate-50"
-                    >
-                      Hạn mức
-                    </button>
-                    <button
-                      onClick={() => toggleLock(u)}
-                      className="mr-2 rounded-md border border-slate-200 px-2.5 py-1 text-xs font-medium text-slate-600 hover:bg-slate-50"
-                    >
-                      {u.isLocked ? 'Mở khóa' : 'Khóa'}
-                    </button>
-                    <button
-                      onClick={() => setUserToDelete(u)}
-                      className="rounded-md border border-red-200 px-2.5 py-1 text-xs font-medium text-red-600 hover:bg-red-50"
-                    >
-                      Xóa
-                    </button>
+                    <div className="inline-flex gap-2">
+                      <button onClick={() => setUserToQuota(u)} className="btn-secondary btn-sm">
+                        Hạn mức
+                      </button>
+                      <button onClick={() => toggleLock(u)} className="btn-secondary btn-sm">
+                        {u.isLocked ? 'Mở khóa' : 'Khóa'}
+                      </button>
+                      <button onClick={() => setUserToDelete(u)} className="btn-danger btn-sm">
+                        Xóa
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))
@@ -323,19 +318,19 @@ const DocumentsTab = () => {
     <div>
       <input
         type="text"
-        placeholder="Tìm theo tên tài liệu..."
+        placeholder="🔍 Tìm theo tên tài liệu..."
         value={search}
         onChange={(e) => setSearch(e.target.value)}
-        className="mb-4 w-full max-w-sm rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none"
+        className="input mb-4 max-w-sm"
       />
 
       {actionError && (
-        <p className="mb-4 rounded-md bg-red-50 px-3 py-2 text-sm text-red-600">{actionError}</p>
+        <p className="mb-4 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">{actionError}</p>
       )}
 
-      <div className="overflow-x-auto rounded-lg border border-slate-200 bg-white">
-        <table className="min-w-full divide-y divide-slate-200 text-sm">
-          <thead className="bg-slate-50 text-left text-xs font-medium uppercase text-slate-500">
+      <div className="card overflow-x-auto">
+        <table className="min-w-full divide-y divide-slate-100 text-sm">
+          <thead className="bg-slate-50/80 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
             <tr>
               <th className="px-4 py-3">Tài liệu</th>
               <th className="px-4 py-3">Chủ sở hữu</th>
@@ -360,7 +355,7 @@ const DocumentsTab = () => {
               </tr>
             ) : (
               documents.map((doc) => (
-                <tr key={doc._id}>
+                <tr key={doc._id} className="transition-colors hover:bg-slate-50/60">
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-2">
                       <FileIcon fileType={doc.fileType} className="h-8 w-8" />
@@ -377,9 +372,7 @@ const DocumentsTab = () => {
                   <td className="px-4 py-3 text-slate-500">{doc.owner?.fullName || '—'}</td>
                   <td className="px-4 py-3 text-slate-500">
                     {doc.sharedWith?.length > 0 ? (
-                      <span className="rounded-full bg-indigo-50 px-2 py-0.5 text-xs font-medium text-indigo-600">
-                        {doc.sharedWith.length} người
-                      </span>
+                      <span className="badge-indigo">{doc.sharedWith.length} người</span>
                     ) : (
                       <span className="text-xs text-slate-300">—</span>
                     )}
@@ -387,18 +380,14 @@ const DocumentsTab = () => {
                   <td className="px-4 py-3 text-slate-500">{formatBytes(doc.size)}</td>
                   <td className="px-4 py-3 text-slate-500">{formatDate(doc.createdAt)}</td>
                   <td className="px-4 py-3 text-right">
-                    <button
-                      onClick={() => setDocToShare(doc)}
-                      className="mr-2 rounded-md border border-slate-200 px-2.5 py-1 text-xs font-medium text-slate-600 hover:bg-slate-50"
-                    >
-                      Chia sẻ
-                    </button>
-                    <button
-                      onClick={() => setDocToDelete(doc)}
-                      className="rounded-md border border-red-200 px-2.5 py-1 text-xs font-medium text-red-600 hover:bg-red-50"
-                    >
-                      Xóa
-                    </button>
+                    <div className="inline-flex gap-2">
+                      <button onClick={() => setDocToShare(doc)} className="btn-secondary btn-sm">
+                        Chia sẻ
+                      </button>
+                      <button onClick={() => setDocToDelete(doc)} className="btn-danger btn-sm">
+                        Xóa
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))
@@ -474,21 +463,18 @@ const TeamsTab = () => {
   return (
     <div>
       <div className="mb-4 flex justify-end">
-        <button
-          onClick={() => setFormModal({})}
-          className="rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700"
-        >
-          + Nhóm mới
+        <button onClick={() => setFormModal({})} className="btn-primary">
+          👥 Nhóm mới
         </button>
       </div>
 
       {actionError && (
-        <p className="mb-4 rounded-md bg-red-50 px-3 py-2 text-sm text-red-600">{actionError}</p>
+        <p className="mb-4 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">{actionError}</p>
       )}
 
-      <div className="overflow-x-auto rounded-lg border border-slate-200 bg-white">
-        <table className="min-w-full divide-y divide-slate-200 text-sm">
-          <thead className="bg-slate-50 text-left text-xs font-medium uppercase text-slate-500">
+      <div className="card overflow-x-auto">
+        <table className="min-w-full divide-y divide-slate-100 text-sm">
+          <thead className="bg-slate-50/80 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
             <tr>
               <th className="px-4 py-3">Tên nhóm</th>
               <th className="px-4 py-3">Mô tả</th>
@@ -511,33 +497,24 @@ const TeamsTab = () => {
               </tr>
             ) : (
               teams.map((team) => (
-                <tr key={team._id}>
+                <tr key={team._id} className="transition-colors hover:bg-slate-50/60">
                   <td className="px-4 py-3 font-medium text-slate-700">{team.name}</td>
                   <td className="px-4 py-3 text-slate-500">{team.description || '—'}</td>
                   <td className="px-4 py-3 text-slate-500">
-                    <span className="rounded-full bg-indigo-50 px-2 py-0.5 text-xs font-medium text-indigo-600">
-                      {team.members.length} người
-                    </span>
+                    <span className="badge-indigo">{team.members.length} người</span>
                   </td>
                   <td className="px-4 py-3 text-right">
-                    <Link
-                      to={`/team/${team._id}`}
-                      className="mr-2 rounded-md border border-slate-200 px-2.5 py-1 text-xs font-medium text-slate-600 hover:bg-slate-50"
-                    >
-                      Mở
-                    </Link>
-                    <button
-                      onClick={() => setFormModal({ team })}
-                      className="mr-2 rounded-md border border-slate-200 px-2.5 py-1 text-xs font-medium text-slate-600 hover:bg-slate-50"
-                    >
-                      Sửa
-                    </button>
-                    <button
-                      onClick={() => setTeamToDelete(team)}
-                      className="rounded-md border border-red-200 px-2.5 py-1 text-xs font-medium text-red-600 hover:bg-red-50"
-                    >
-                      Xóa
-                    </button>
+                    <div className="inline-flex gap-2">
+                      <Link to={`/team/${team._id}`} className="btn-secondary btn-sm">
+                        Mở
+                      </Link>
+                      <button onClick={() => setFormModal({ team })} className="btn-secondary btn-sm">
+                        Sửa
+                      </button>
+                      <button onClick={() => setTeamToDelete(team)} className="btn-danger btn-sm">
+                        Xóa
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))
@@ -593,11 +570,7 @@ const ActivityLogTab = () => {
 
   return (
     <div>
-      <select
-        value={action}
-        onChange={(e) => setAction(e.target.value)}
-        className="mb-4 rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none"
-      >
+      <select value={action} onChange={(e) => setAction(e.target.value)} className="input mb-4 max-w-xs">
         <option value="">Tất cả hành động</option>
         {Object.entries(ACTION_LABELS).map(([key, label]) => (
           <option key={key} value={key}>
@@ -606,9 +579,9 @@ const ActivityLogTab = () => {
         ))}
       </select>
 
-      <div className="overflow-x-auto rounded-lg border border-slate-200 bg-white">
-        <table className="min-w-full divide-y divide-slate-200 text-sm">
-          <thead className="bg-slate-50 text-left text-xs font-medium uppercase text-slate-500">
+      <div className="card overflow-x-auto">
+        <table className="min-w-full divide-y divide-slate-100 text-sm">
+          <thead className="bg-slate-50/80 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
             <tr>
               <th className="px-4 py-3">Người dùng</th>
               <th className="px-4 py-3">Hành động</th>
@@ -631,12 +604,10 @@ const ActivityLogTab = () => {
               </tr>
             ) : (
               logs.map((log) => (
-                <tr key={log._id}>
+                <tr key={log._id} className="transition-colors hover:bg-slate-50/60">
                   <td className="px-4 py-3 text-slate-700">{log.user?.fullName || '—'}</td>
                   <td className="px-4 py-3">
-                    <span className="rounded-full bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-600">
-                      {ACTION_LABELS[log.action] || log.action}
-                    </span>
+                    <span className="badge-slate">{ACTION_LABELS[log.action] || log.action}</span>
                   </td>
                   <td className="px-4 py-3 text-slate-500">{log.targetName || '—'}</td>
                   <td className="px-4 py-3 text-slate-500">{formatDate(log.createdAt)}</td>
@@ -664,19 +635,17 @@ const Admin = () => {
 
   return (
     <div>
-      <h2 className="mb-4 text-lg font-semibold text-slate-800">Quản trị hệ thống</h2>
+      <h2 className="mb-5 text-xl font-bold tracking-tight text-slate-900">🛡️ Quản trị hệ thống</h2>
 
       <StatsBar stats={stats} cloudUsage={cloudUsage} />
 
-      <div className="mb-4 flex gap-1 border-b border-slate-200">
+      <div className="mb-5 inline-flex gap-1 rounded-lg bg-slate-100 p-1">
         {TABS.map((t) => (
           <button
             key={t.key}
             onClick={() => setTab(t.key)}
-            className={`px-4 py-2 text-sm font-medium ${
-              tab === t.key
-                ? 'border-b-2 border-indigo-600 text-indigo-600'
-                : 'text-slate-500 hover:text-slate-700'
+            className={`rounded-md px-4 py-1.5 text-sm font-medium transition-all ${
+              tab === t.key ? 'bg-white text-indigo-700 shadow-sm' : 'text-slate-500 hover:text-slate-700'
             }`}
           >
             {t.label}

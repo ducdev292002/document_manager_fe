@@ -51,24 +51,22 @@ const ShareModal = ({ open, doc, onClose, onShared }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
-      <div className="flex max-h-[80vh] w-full max-w-md flex-col rounded-lg bg-white p-5 shadow-lg">
-        <h3 className="text-base font-semibold text-slate-800">
-          Chia sẻ "{doc.displayName}"
-        </h3>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 p-4 backdrop-blur-xs">
+      <div className="flex max-h-[80vh] w-full max-w-md flex-col rounded-xl bg-white p-6 shadow-xl">
+        <h3 className="text-base font-semibold text-slate-800">🔗 Chia sẻ "{doc.displayName}"</h3>
         <p className="mt-1 text-xs text-slate-400">
           Chọn user được phép xem &amp; tải xuống tài liệu này (chỉ xem, không sửa/xóa được).
         </p>
 
         <input
           type="text"
-          placeholder="Tìm theo tên hoặc email..."
+          placeholder="🔍 Tìm theo tên hoặc email..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="mt-3 w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none"
+          className="input mt-4"
         />
 
-        <div className="mt-3 flex-1 overflow-y-auto rounded-md border border-slate-200">
+        <div className="mt-3 flex-1 overflow-y-auto rounded-lg border border-slate-200">
           {loading ? (
             <p className="p-4 text-center text-sm text-slate-400">Đang tải...</p>
           ) : users.length === 0 ? (
@@ -77,7 +75,7 @@ const ShareModal = ({ open, doc, onClose, onShared }) => {
             <ul className="divide-y divide-slate-100">
               {users.map((u) => (
                 <li key={u.id}>
-                  <label className="flex cursor-pointer items-center gap-3 px-3 py-2 hover:bg-slate-50">
+                  <label className="flex cursor-pointer items-center gap-3 px-3 py-2 transition-colors hover:bg-slate-50">
                     <input
                       type="checkbox"
                       checked={selected.has(u.id)}
@@ -95,23 +93,13 @@ const ShareModal = ({ open, doc, onClose, onShared }) => {
           )}
         </div>
 
-        {error && <p className="mt-2 text-sm text-red-500">{error}</p>}
+        {error && <p className="mt-2 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">{error}</p>}
 
         <div className="mt-4 flex justify-end gap-2">
-          <button
-            type="button"
-            onClick={onClose}
-            disabled={saving}
-            className="rounded-md border border-slate-200 px-3 py-1.5 text-sm font-medium text-slate-600 hover:bg-slate-50 disabled:opacity-50"
-          >
+          <button type="button" onClick={onClose} disabled={saving} className="btn-secondary">
             Hủy
           </button>
-          <button
-            type="button"
-            onClick={handleSave}
-            disabled={saving}
-            className="rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
-          >
+          <button type="button" onClick={handleSave} disabled={saving} className="btn-primary">
             {saving ? 'Đang lưu...' : `Lưu (${selected.size} người)`}
           </button>
         </div>

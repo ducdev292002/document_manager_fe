@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
+:root {
+  color-scheme: light;
+  --shadow-soft: 0 1px 2px 0 rgb(15 23 42 / 0.04), 0 1px 3px 0 rgb(15 23 42 / 0.06);
+  --shadow-elevated: 0 4px 6px -2px rgb(15 23 42 / 0.05), 0 12px 24px -8px rgb(15 23 42 / 0.1);
+}
+
 html,
 body,
 #root {
@@ -8,6 +14,99 @@ body,
 
 body {
   margin: 0;
-  font-family: system-ui, 'Segoe UI', Roboto, sans-serif;
+  font-family: 'Inter', system-ui, 'Segoe UI', Roboto, sans-serif;
   background-color: #f8fafc;
+  color: #1e293b;
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  scrollbar-color: #cbd5e1 transparent;
+}
+
+@layer components {
+  /* Buttons */
+  .btn-sm {
+    @apply px-3 py-1.5 text-xs;
+  }
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-1.5 rounded-lg bg-linear-to-b from-indigo-500
+      to-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition-all duration-150
+      hover:to-indigo-700 active:to-indigo-800 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-1.5 rounded-lg border border-slate-200 bg-white
+      px-4 py-2 text-sm font-medium text-slate-700 shadow-xs transition-all duration-150
+      hover:bg-slate-50 active:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-danger {
+    @apply inline-flex items-center justify-center gap-1.5 rounded-lg border border-red-200 bg-white
+      px-4 py-2 text-sm font-medium text-red-600 shadow-xs transition-all duration-150
+      hover:bg-red-50 active:bg-red-100 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-danger-solid {
+    @apply inline-flex items-center justify-center gap-1.5 rounded-lg bg-red-600 px-4 py-2 text-sm
+      font-medium text-white shadow-sm transition-all duration-150
+      hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-1.5 rounded-lg px-4 py-2 text-sm font-medium
+      text-slate-500 transition-all duration-150
+      hover:bg-slate-100 hover:text-slate-700 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  /* Form controls */
+  .field-label {
+    @apply mb-1.5 block text-sm font-medium text-slate-600;
+  }
+  .input {
+    @apply w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700
+      shadow-xs transition placeholder:text-slate-400
+      focus:border-indigo-400 focus:outline-none focus:ring-3 focus:ring-indigo-100;
+  }
+
+  /* Surfaces */
+  .card {
+    @apply rounded-xl border border-slate-200 bg-white shadow-[var(--shadow-soft)];
+  }
+  .card-hover {
+    @apply rounded-xl border border-slate-200 bg-white shadow-[var(--shadow-soft)] transition-all
+      duration-200 hover:-translate-y-0.5 hover:shadow-[var(--shadow-elevated)];
+  }
+
+  /* Badges */
+  .badge-indigo {
+    @apply inline-flex items-center rounded-full bg-indigo-50 px-2.5 py-0.5 text-xs font-medium text-indigo-600;
+  }
+  .badge-green {
+    @apply inline-flex items-center rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-medium text-emerald-600;
+  }
+  .badge-red {
+    @apply inline-flex items-center rounded-full bg-red-50 px-2.5 py-0.5 text-xs font-medium text-red-600;
+  }
+  .badge-slate {
+    @apply inline-flex items-center rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-medium text-slate-500;
+  }
+
+  /* Nav links (sidebar) */
+  .nav-link {
+    @apply flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-slate-600
+      transition-colors hover:bg-slate-100 hover:text-slate-900;
+  }
+  .nav-link-active {
+    @apply bg-indigo-50 text-indigo-700;
+  }
+}
+
+/* Scrollbar polish (WebKit) */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #cbd5e1;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
 }

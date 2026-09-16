@@ -33,44 +33,36 @@ const QuotaModal = ({ open, user, onClose, onSubmit }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
-      <div className="w-full max-w-sm rounded-lg bg-white p-5 shadow-lg">
-        <h3 className="text-base font-semibold text-slate-800">
-          Hạn mức lưu trữ - {user?.fullName}
-        </h3>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 p-4 backdrop-blur-xs">
+      <div className="w-full max-w-sm rounded-xl bg-white p-6 shadow-xl">
+        <h3 className="text-base font-semibold text-slate-800">📊 Hạn mức lưu trữ - {user?.fullName}</h3>
         <p className="mt-1 text-xs text-slate-400">
-          Đang dùng: {user ? (user.storageUsedBytes / (1024 * 1024)).toFixed(1) : 0} MB
+          Đang dùng:{' '}
+          <span className="font-medium text-slate-500">
+            {user ? (user.storageUsedBytes / (1024 * 1024)).toFixed(1) : 0} MB
+          </span>
         </p>
 
         <form onSubmit={handleSubmit} className="mt-4 space-y-4">
           <div>
-            <label className="block text-sm font-medium text-slate-600">Hạn mức (MB)</label>
+            <label className="field-label">Hạn mức (MB)</label>
             <input
               type="number"
               min="1"
               value={value}
               onChange={(e) => setValue(e.target.value)}
               placeholder="Để trống = không giới hạn"
-              className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none"
+              className="input"
             />
           </div>
 
-          {error && <p className="text-sm text-red-500">{error}</p>}
+          {error && <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">{error}</p>}
 
           <div className="flex justify-end gap-2">
-            <button
-              type="button"
-              onClick={onClose}
-              disabled={saving}
-              className="rounded-md border border-slate-200 px-3 py-1.5 text-sm font-medium text-slate-600 hover:bg-slate-50 disabled:opacity-50"
-            >
+            <button type="button" onClick={onClose} disabled={saving} className="btn-secondary">
               Hủy
             </button>
-            <button
-              type="submit"
-              disabled={saving}
-              className="rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
-            >
+            <button type="submit" disabled={saving} className="btn-primary">
               {saving ? 'Đang lưu...' : 'Lưu'}
             </button>
           </div>

@@ -16,12 +16,11 @@ const FolderCard = ({ folder, onOpen, onRename, onDelete }) => {
   }, [menuOpen]);
 
   return (
-    <div className="group relative flex flex-col rounded-lg border border-slate-200 bg-white p-4 shadow-sm hover:shadow-md">
-      <button
-        onClick={() => onOpen(folder)}
-        className="flex flex-col items-center gap-2"
-      >
-        <span className="text-4xl">📁</span>
+    <div className="card-hover group relative flex flex-col p-4">
+      <button onClick={() => onOpen(folder)} className="flex flex-col items-center gap-2 py-1">
+        <span className="flex h-14 w-14 items-center justify-center rounded-xl bg-amber-50 text-3xl">
+          📁
+        </span>
         <span className="w-full max-w-[9rem] truncate text-sm font-medium text-slate-700" title={folder.name}>
           {folder.name}
         </span>
@@ -30,14 +29,14 @@ const FolderCard = ({ folder, onOpen, onRename, onDelete }) => {
       <div ref={menuRef} className="absolute right-2 top-2">
         <button
           onClick={() => setMenuOpen((o) => !o)}
-          className="hidden h-6 w-6 items-center justify-center rounded-full bg-white/90 text-slate-500 shadow group-hover:flex hover:bg-slate-100"
+          className="hidden h-6 w-6 items-center justify-center rounded-full bg-white/95 text-slate-500 shadow-sm ring-1 ring-slate-200 group-hover:flex hover:bg-slate-100"
           title="Tùy chọn"
         >
           ⋮
         </button>
 
         {menuOpen && (
-          <div className="absolute right-0 top-8 z-10 w-32 rounded-md border border-slate-200 bg-white py-1 text-sm shadow-lg">
+          <div className="absolute right-0 top-8 z-10 w-32 overflow-hidden rounded-lg border border-slate-200 bg-white py-1 text-sm shadow-lg">
             <button
               onClick={() => {
                 setMenuOpen(false);

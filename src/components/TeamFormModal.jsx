@@ -60,10 +60,10 @@ const TeamFormModal = ({ open, team, onClose, onSubmit }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
-      <div className="flex max-h-[85vh] w-full max-w-md flex-col rounded-lg bg-white p-5 shadow-lg">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 p-4 backdrop-blur-xs">
+      <div className="flex max-h-[85vh] w-full max-w-md flex-col rounded-xl bg-white p-6 shadow-xl">
         <h3 className="text-base font-semibold text-slate-800">
-          {team ? 'Chỉnh sửa nhóm' : 'Tạo nhóm mới'}
+          👥 {team ? 'Chỉnh sửa nhóm' : 'Tạo nhóm mới'}
         </h3>
 
         <form onSubmit={handleSubmit} className="mt-4 flex flex-1 flex-col gap-3 overflow-hidden">
@@ -71,25 +71,25 @@ const TeamFormModal = ({ open, team, onClose, onSubmit }) => {
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Tên nhóm"
-            className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none"
+            className="input"
           />
           <input
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             placeholder="Mô tả (tùy chọn)"
-            className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none"
+            className="input"
           />
 
-          <p className="text-xs font-medium text-slate-500">Thành viên</p>
+          <p className="pt-1 text-xs font-semibold uppercase tracking-wide text-slate-400">Thành viên</p>
           <input
             type="text"
-            placeholder="Tìm theo tên hoặc email..."
+            placeholder="🔍 Tìm theo tên hoặc email..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none"
+            className="input"
           />
 
-          <div className="flex-1 overflow-y-auto rounded-md border border-slate-200">
+          <div className="flex-1 overflow-y-auto rounded-lg border border-slate-200">
             {loadingUsers ? (
               <p className="p-4 text-center text-sm text-slate-400">Đang tải...</p>
             ) : users.length === 0 ? (
@@ -98,7 +98,7 @@ const TeamFormModal = ({ open, team, onClose, onSubmit }) => {
               <ul className="divide-y divide-slate-100">
                 {users.map((u) => (
                   <li key={u.id}>
-                    <label className="flex cursor-pointer items-center gap-3 px-3 py-2 hover:bg-slate-50">
+                    <label className="flex cursor-pointer items-center gap-3 px-3 py-2 transition-colors hover:bg-slate-50">
                       <input
                         type="checkbox"
                         checked={selected.has(u.id)}
@@ -116,22 +116,13 @@ const TeamFormModal = ({ open, team, onClose, onSubmit }) => {
             )}
           </div>
 
-          {error && <p className="text-sm text-red-500">{error}</p>}
+          {error && <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">{error}</p>}
 
           <div className="flex justify-end gap-2 pt-1">
-            <button
-              type="button"
-              onClick={onClose}
-              disabled={saving}
-              className="rounded-md border border-slate-200 px-3 py-1.5 text-sm font-medium text-slate-600 hover:bg-slate-50 disabled:opacity-50"
-            >
+            <button type="button" onClick={onClose} disabled={saving} className="btn-secondary">
               Hủy
             </button>
-            <button
-              type="submit"
-              disabled={saving}
-              className="rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
-            >
+            <button type="submit" disabled={saving} className="btn-primary">
               {saving ? 'Đang lưu...' : `Lưu (${selected.size} thành viên)`}
             </button>
           </div>
