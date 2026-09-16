@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { fetchUsers, shareDocument } from '../services/adminService';
+import { fetchShareableUsers, shareDocument } from '../services/documentService';
 import { useDebounce } from '../hooks/useDebounce';
 
 const ShareModal = ({ open, doc, onClose, onShared }) => {
@@ -20,8 +20,8 @@ const ShareModal = ({ open, doc, onClose, onShared }) => {
   useEffect(() => {
     if (!open) return;
     setLoading(true);
-    fetchUsers({ search: debouncedSearch, limit: 100 })
-      .then((res) => setUsers(res.data))
+    fetchShareableUsers({ search: debouncedSearch, limit: 100 })
+      .then(setUsers)
       .finally(() => setLoading(false));
   }, [open, debouncedSearch]);
 

@@ -13,9 +13,6 @@ export const fetchAllDocuments = (params) =>
 export const deleteAnyDocument = (id) =>
   api.delete(`/admin/documents/${id}`).then((r) => r.data);
 
-export const shareDocument = (id, userIds) =>
-  api.patch(`/admin/documents/${id}/share`, { userIds }).then((r) => r.data.data);
-
 export const fetchStats = () => api.get('/admin/stats').then((r) => r.data.data);
 
 export const fetchCloudinaryUsage = () => api.get('/admin/cloudinary-usage').then((r) => r.data.data);

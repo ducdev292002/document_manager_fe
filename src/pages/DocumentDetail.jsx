@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import ConfirmDialog from '../components/ConfirmDialog';
+import ShareModal from '../components/ShareModal';
 import FileIcon from '../components/FileIcon';
 import {
   fetchDocument,
@@ -30,6 +31,7 @@ const DocumentDetail = () => {
   const [tags, setTags] = useState('');
   const [saving, setSaving] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [shareOpen, setShareOpen] = useState(false);
   const [aiLoading, setAiLoading] = useState(false);
   const [aiError, setAiError] = useState('');
 
@@ -219,6 +221,9 @@ const DocumentDetail = () => {
                   <button onClick={() => setEditing(true)} className="btn-secondary">
                     ✏️ Chỉnh sửa
                   </button>
+                  <button onClick={() => setShareOpen(true)} className="btn-secondary">
+                    🔗 Chia sẻ
+                  </button>
                   <button onClick={() => setConfirmDelete(true)} className="btn-danger">
                     🗑️ Xóa
                   </button>
@@ -241,6 +246,8 @@ const DocumentDetail = () => {
         onConfirm={handleDelete}
         onCancel={() => setConfirmDelete(false)}
       />
+
+      <ShareModal open={shareOpen} doc={doc} onClose={() => setShareOpen(false)} onShared={load} />
     </div>
   );
 };

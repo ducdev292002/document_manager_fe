@@ -7,6 +7,7 @@ import Breadcrumbs from '../components/Breadcrumbs';
 import Pagination from '../components/Pagination';
 import UploadModal from '../components/UploadModal';
 import ConfirmDialog from '../components/ConfirmDialog';
+import ShareModal from '../components/ShareModal';
 import { useDebounce } from '../hooks/useDebounce';
 import { fetchDocuments, deleteDocument } from '../services/documentService';
 import {
@@ -52,6 +53,7 @@ const Dashboard = () => {
   const [isDraggingOver, setIsDraggingOver] = useState(false);
   const dragCounterRef = useRef(0);
   const [docToDelete, setDocToDelete] = useState(null);
+  const [docToShare, setDocToShare] = useState(null);
   const [deleteError, setDeleteError] = useState('');
 
   const [folderModal, setFolderModal] = useState(null); // { mode: 'create' | 'rename', folder? }
@@ -299,7 +301,13 @@ const Dashboard = () => {
           )}
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
             {documents.map((doc) => (
-              <DocumentCard key={doc._id} doc={doc} onDelete={setDocToDelete} showOwner={!!teamId} />
+              <DocumentCard
+                key={doc._id}
+                doc={doc}
+                onDelete={setDocToDelete}
+                onShare={setDocToShare}
+                showOwner={!!teamId}
+              />
             ))}
           </div>
         </div>
@@ -343,6 +351,13 @@ const Dashboard = () => {
         confirmText="Xóa"
         onConfirm={handleDeleteDocument}
         onCancel={() => setDocToDelete(null)}
+      />
+
+      <ShareModal
+        open={!!docToShare}
+        doc={docToShare}
+        onClose={() => setDocToShare(null)}
+        onShared={loadDocuments}
       />
     </div>
   );

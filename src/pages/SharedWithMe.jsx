@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useMemo } from 'react';
 import DocumentCard from '../components/DocumentCard';
 import Pagination from '../components/Pagination';
 import { useDebounce } from '../hooks/useDebounce';
@@ -16,7 +16,7 @@ const SharedWithMe = () => {
   const load = useCallback(async () => {
     setLoading(true);
     try {
-      const res = await fetchSharedDocuments({ search: debouncedSearch, page, limit: 12 });
+      const res = await fetchSharedDocuments({ search: debouncedSearch, page, limit: 24 });
       setDocuments(res.data);
       setPagination(res.pagination);
     } finally {
@@ -31,6 +31,19 @@ const SharedWithMe = () => {
   useEffect(() => {
     setPage(1);
   }, [debouncedSearch]);
+
+  // Group by the folder/team the document lives in on the sharer's side -
+  // shared docs have no folder access of their own, so this is display-only.
+  const groups = useMemo(() => {
+    const map = new Map();
+    for (const doc of documents) {
+      const key = doc.folder?._id || doc.team?._id || 'root';
+      const label = doc.folder?.name || (doc.team?.name ? `👥 ${doc.team.name}` : '📄 Không thuộc thư mục');
+      if (!map.has(key)) map.set(key, { label, docs: [] });
+      map.get(key).docs.push(doc);
+    }
+    return Array.from(map.values());
+  }, [documents]);
 
   return (
     <div>
@@ -52,9 +65,19 @@ const SharedWithMe = () => {
           <p className="text-sm text-slate-400">Chưa có tài liệu nào được chia sẻ với bạn.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-          {documents.map((doc) => (
-            <DocumentCard key={doc._id} doc={doc} showOwner />
+        <div className="space-y-8">
+          {groups.map((group) => (
+            <div key={group.label}>
+              <p className="mb-3 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-slate-400">
+                {group.label.startsWith('👥') || group.label.startsWith('📄') ? '' : '📁'} {group.label} ·{' '}
+                {group.docs.length} tài liệu
+              </p>
+              <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+                {group.docs.map((doc) => (
+                  <DocumentCard key={doc._id} doc={doc} showOwner />
+                ))}
+              </div>
+            </div>
           ))}
         </div>
       )}

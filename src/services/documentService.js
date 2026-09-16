@@ -9,6 +9,9 @@ export const fetchDocument = (id) =>
 export const fetchSharedDocuments = (params) =>
   api.get('/documents/shared', { params }).then((r) => r.data);
 
+export const fetchShareableUsers = (params) =>
+  api.get('/documents/shareable-users', { params }).then((r) => r.data.data);
+
 export const uploadDocuments = (files, { category, tags, folder, team }, onUploadProgress) => {
   const formData = new FormData();
   files.forEach((file) => formData.append('files', file));
@@ -27,6 +30,9 @@ export const uploadDocuments = (files, { category, tags, folder, team }, onUploa
 
 export const suggestDocumentMetadata = (id) =>
   api.post(`/documents/${id}/ai-suggest`).then((r) => r.data.data);
+
+export const shareDocument = (id, userIds) =>
+  api.patch(`/documents/${id}/share`, { userIds }).then((r) => r.data.data);
 
 export const updateDocument = (id, payload) =>
   api.patch(`/documents/${id}`, payload).then((r) => r.data.data);
