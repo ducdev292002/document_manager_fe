@@ -1,10 +1,13 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { formatBytes } from '../utils/format';
+import ChangePasswordModal from './ChangePasswordModal';
 
 const Header = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const [changePasswordOpen, setChangePasswordOpen] = useState(false);
 
   const handleLogout = async () => {
     await logout();
@@ -29,12 +32,20 @@ const Header = () => {
           {user?.fullName?.charAt(0)?.toUpperCase() || '?'}
         </div>
         <button
+          onClick={() => setChangePasswordOpen(true)}
+          className="rounded-md border border-slate-200 px-3 py-1.5 text-sm font-medium text-slate-600 hover:bg-slate-50"
+        >
+          Đổi mật khẩu
+        </button>
+        <button
           onClick={handleLogout}
           className="rounded-md border border-slate-200 px-3 py-1.5 text-sm font-medium text-slate-600 hover:bg-slate-50"
         >
           Đăng xuất
         </button>
       </div>
+
+      <ChangePasswordModal open={changePasswordOpen} onClose={() => setChangePasswordOpen(false)} />
     </header>
   );
 };
