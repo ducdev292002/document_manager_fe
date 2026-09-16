@@ -19,6 +19,7 @@ const ConfirmDialog = ({ open, title, message, onConfirm, onCancel, confirmText 
               danger ? 'bg-red-600 hover:bg-red-700' : 'bg-indigo-600 hover:bg-indigo-700'
             }`}
           >
+            
             {confirmText}
           </button>
         </div>
