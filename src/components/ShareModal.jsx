@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { fetchShareableUsers, shareDocument } from '../services/documentService';
 import { useDebounce } from '../hooks/useDebounce';
+import ModalPortal from './ModalPortal';
 
 const ShareModal = ({ open, doc, onClose, onShared }) => {
   const [users, setUsers] = useState([]);
@@ -51,6 +52,7 @@ const ShareModal = ({ open, doc, onClose, onShared }) => {
   };
 
   return (
+    <ModalPortal>
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 p-4 backdrop-blur-xs">
       <div className="flex max-h-[80vh] w-full max-w-md flex-col rounded-xl bg-white p-6 shadow-xl">
         <h3 className="text-base font-semibold text-slate-800">🔗 Chia sẻ "{doc.displayName}"</h3>
@@ -105,6 +107,7 @@ const ShareModal = ({ open, doc, onClose, onShared }) => {
         </div>
       </div>
     </div>
+    </ModalPortal>
   );
 };
 

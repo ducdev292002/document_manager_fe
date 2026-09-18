@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { fetchUsers } from '../services/adminService';
 import { useDebounce } from '../hooks/useDebounce';
+import ModalPortal from './ModalPortal';
 
 const TeamFormModal = ({ open, team, onClose, onSubmit }) => {
   const [name, setName] = useState('');
@@ -60,6 +61,7 @@ const TeamFormModal = ({ open, team, onClose, onSubmit }) => {
   };
 
   return (
+    <ModalPortal>
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 p-4 backdrop-blur-xs">
       <div className="flex max-h-[85vh] w-full max-w-md flex-col rounded-xl bg-white p-6 shadow-xl">
         <h3 className="text-base font-semibold text-slate-800">
@@ -129,6 +131,7 @@ const TeamFormModal = ({ open, team, onClose, onSubmit }) => {
         </form>
       </div>
     </div>
+    </ModalPortal>
   );
 };
 

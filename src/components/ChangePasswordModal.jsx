@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { changePassword } from '../services/authService';
+import ModalPortal from './ModalPortal';
 
 const ChangePasswordModal = ({ open, onClose }) => {
   const [currentPassword, setCurrentPassword] = useState('');
@@ -48,6 +49,7 @@ const ChangePasswordModal = ({ open, onClose }) => {
   };
 
   return (
+    <ModalPortal>
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 p-4 backdrop-blur-xs">
       <div className="w-full max-w-sm rounded-xl bg-white p-6 shadow-xl">
         <h3 className="text-base font-semibold text-slate-800">🔑 Đổi mật khẩu</h3>
@@ -110,6 +112,7 @@ const ChangePasswordModal = ({ open, onClose }) => {
         )}
       </div>
     </div>
+    </ModalPortal>
   );
 };
 

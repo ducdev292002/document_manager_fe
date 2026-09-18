@@ -20,7 +20,7 @@ const Login = () => {
       const redirectTo = user.role === 'admin' ? '/admin' : '/dashboard';
       navigate(location.state?.from || redirectTo, { replace: true });
     } catch (err) {
-      setError(err.response?.data?.message || 'Đăng nhập thất bại');
+      setError(err.response?.data?.message || err.message || 'Đăng nhập thất bại');
     } finally {
       setLoading(false);
     }

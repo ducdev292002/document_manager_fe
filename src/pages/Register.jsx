@@ -25,7 +25,7 @@ const Register = () => {
       await register({ fullName, email, password });
       navigate('/dashboard', { replace: true });
     } catch (err) {
-      setError(err.response?.data?.message || 'Đăng ký thất bại');
+      setError(err.response?.data?.message || err.message || 'Đăng ký thất bại');
     } finally {
       setLoading(false);
     }

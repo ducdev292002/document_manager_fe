@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { uploadDocuments } from '../services/documentService';
 import { formatBytes } from '../utils/format';
+import ModalPortal from './ModalPortal';
 
 const MAX_SIZE = 20 * 1024 * 1024;
 
@@ -97,6 +98,7 @@ const UploadModal = ({ open, onClose, onUploaded, folderId, teamId, initialFiles
   };
 
   return (
+    <ModalPortal>
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 p-4 backdrop-blur-xs">
       <div className="w-full max-w-md rounded-xl bg-white p-6 shadow-xl">
         <h3 className="text-base font-semibold text-slate-800">⬆ Tải lên tài liệu</h3>
@@ -192,6 +194,7 @@ const UploadModal = ({ open, onClose, onUploaded, folderId, teamId, initialFiles
         </form>
       </div>
     </div>
+    </ModalPortal>
   );
 };
 
