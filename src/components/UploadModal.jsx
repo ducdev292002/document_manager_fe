@@ -179,7 +179,8 @@ const UploadModal = ({ open, onClose, onUploaded, folderId, teamId, initialFiles
               <div
                 className="h-full rounded-full bg-linear-to-r from-indigo-500 to-purple-500 transition-all"
                 style={{ width: `${progress}%` }}
-              />
+              /> 
+              
             </div>
           )}
 
